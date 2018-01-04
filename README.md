@@ -1,4 +1,4 @@
-# ban-instance - For when a type should never have an instance
+# ban-instance - For when a type should never be an instance of a class
 
 ## Synopsis
 
