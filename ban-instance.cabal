@@ -1,0 +1,37 @@
+name:           ban-instance
+version:        0.1.0.0
+synopsis:       For when a type should never have an instance
+description:    Please see the README on Github at <https://github.com/githubuser/ban-instance#readme>
+homepage:       https://github.com/githubuser/ban-instance#readme
+bug-reports:    https://github.com/githubuser/ban-instance/issues
+author:         Jack Kelly
+maintainer:     jack.kelly@data61.csiro.au
+copyright:      Copyright (C) 2017 Data61
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+
+extra-source-files: ChangeLog.md
+                    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/ban-instance
+
+library
+  hs-source-dirs: src
+  ghc-options: -O2 -Wall
+  build-depends: base >= 4.7 && < 5
+               , template-haskell >= 2.11 && < 2.12
+  exposed-modules: Language.Haskell.Instance.Ban
+  default-language: Haskell2010
+
+test-suite ban-instance-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs: test
+  ghc-options: -O2 -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
+  build-depends: base >= 4.7 && < 5
+               , ban-instance
+  default-language: Haskell2010
