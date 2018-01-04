@@ -24,38 +24,34 @@ this instance should never be defined, and to provide a reason why. In
 terms of what programs the compiler will accept, banning an instance
 is the same as leaving it undefined.
 
-Our main use case is banning `FromJSON`/`ToJSON` instances on common
-data structures, because we want to force the programmer to select a
-specific serialisation by using `newtype`.
-
-We have systems which send and receive the same data type over
-multiple different APIs, and these APIs need to vary their JSON
-representations independently to allow upgrades. Defining
-serialisation on the bare data type means that changes to the
-`FromJSON`/`ToJSON` instance can cause breakage at your API layer,
-potentially several layers away. Banning `FromJSON`/`ToJSON` on the
-bare data type and using a `newtype` allows the serialisation format
-to be defined alongside the rest of the API:
+Our main use case is banning `ToJSON`/`FromJSON` instances on "core"
+data structures to ensure serialisation/deserialisation is defined at
+API boundaries. We have systems which send and receive values of
+similar types over multiple different APIs, and which need to vary
+their JSON representations independently to allow upgrades. Defining
+serialisation on core data types means that changes to the
+`ToJSON`/`FromJSON` instance can cause breakage at your API layer, on
+the other side of the codebase. Better to ban `ToJSON`/`FromJSON` on
+the core data types, and define types for presentation that live
+alongside the rest of the API:
 
 ```haskell
 -- In some "core types" module:
 data Foo = -- ...
-$(banInstance [t|FromJSON Foo|]
-  "use a newtype wrapper to select a serialisation format")
-$(banInstance [t|ToJSON Foo|]
-  "use a newtype wrapper to select a serialisation format")
+$(banInstance [t|ToJSON Foo|] "use a data type at the presentation layer")
+$(banInstance [t|FromJSON Foo|] "use a data type at the presentation layer")
 
 -- In the module for "API One":
-newtype ApiOne a = ApiOne a
+data FooOne = -- ...
 
-instance FromJSON (ApiOne Foo) where -- ...
-instance ToJSON (ApiOne Foo) where -- ...
+instance ToJSON FooOne where -- ...
+instance FromJSON FooOne where -- ...
 
 -- In the module for "API Two":
-newtype ApiTwo a = ApiTwo a
+data FooTwo = -- ...
 
-instance FromJSON (ApiTwo Foo) where -- ...
-instance ToJSON (ApiTwo Foo) where -- ...
+instance ToJSON FooTwo where -- ...
+instance FromJSON FooTwo where -- ...
 ```
 
 ## Limitations
