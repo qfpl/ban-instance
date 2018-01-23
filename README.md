@@ -1,5 +1,7 @@
 # ban-instance - For when a type should never be an instance of a class
 
+![Data61](http://i.imgur.com/0h9dFhl.png)
+
 ## Synopsis
 
 ```haskell
