@@ -1,3 +1,6 @@
-.stack-work/
-stack.yaml
 *~
+.stack-work/
+dist-newstyle/
+dist/
+result
+stack.yaml
