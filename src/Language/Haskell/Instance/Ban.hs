@@ -12,7 +12,18 @@ import Language.Haskell.TH.Syntax
 
 -- TODO: Mark instances as deprecated so haddock sees them.
 -- TODO: Overlappable instances?
-banInstance :: TypeQ -> String -> DecsQ
+-- | Ban an instance of a typeclass; code which tries to use the
+-- banned instance will fail at compile time. This works by generating
+-- an instance that depends on a custom type error:
+--
+-- > instance TypeError (..) => ToJSON Foo where
+-- > ...
+banInstance
+  :: TypeQ
+     -- ^ The instance you want to ban.
+     -- Most easily written with a type-quote: @[t|ToJSON Foo|]@
+  -> String -- ^ The reason that this instance is banned.
+  -> DecsQ
 banInstance constraintQ message = do
   loc <- qLocation
   ClassI (ClassD _ _ _ _ classDecs) _ <- className <$> constraintQ >>= reify
