@@ -5,6 +5,7 @@
 
 module Language.Haskell.Instance.Ban (banInstance) where
 
+import Data.Maybe                 (mapMaybe)
 import GHC.TypeLits
 import Language.Haskell.TH.Lib
 import Language.Haskell.TH.Ppr
@@ -27,7 +28,6 @@ banInstance
 banInstance constraintQ message = do
   loc <- qLocation
   ClassI (ClassD _ _ _ _ classDecs) _ <- className <$> constraintQ >>= reify
-
   let context :: CxtQ
       context = cxt [[t|TypeError ('Text "Attempt to use banned instance (" ':<>: 'ShowType $(constraintQ) ':<>: 'Text ")"
                                   ':$$: 'Text "Reason for banning: " ':<>: 'Text $(symbol message)
@@ -49,8 +49,9 @@ className topTy = go topTy where
   go _ = error $ "Cannot determine class name for type: " ++ pprint topTy
 
 convertClassDecs :: [Dec] -> [DecQ]
-convertClassDecs = map go where
+convertClassDecs = mapMaybe go where
   -- TODO: Support type/data families?
-  go (SigD name _) = funD name [clause [] (normalB [|undefined|]) []]
+  go (SigD name _) = Just $ funD name [clause [] (normalB [|undefined|]) []]
+  go DefaultSigD{} = Nothing
   go _ = error "Banning instances only supported for classes \
                \that contain only functions. Patches welcome."
