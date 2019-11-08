@@ -11,7 +11,7 @@ description:
   data Foo = -- ...
 
   -- Declare that Foo should never have a ToJSON instance
-  $(banInstance [t|ToJSON Foo|] "why Eq Foo should never be defined")
+  $(banInstance [t|ToJSON Foo|] "why ToJSON Foo should never be defined")
   @
 
 category:       Haskell

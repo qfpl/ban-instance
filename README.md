@@ -18,7 +18,16 @@ import Lanuage.Haskell.Instance.Ban
 data Foo = -- ...
 
 -- Declare that Foo should never have a ToJSON instance
-$(banInstance [t|ToJSON Foo|] "why Eq Foo should never be defined")
+$(banInstance [t|ToJSON Foo|] "why ToJSON Foo should never be defined")
+```
+
+Code that attempts to use the banned instance will generate a custom
+error message:
+
+```
+   • Attempt to use banned instance (ToJSON Foo)
+      Reason for banning: why ToJSON Foo should never be defined
+      Instance banned at [moduleName] filePath:lineNumber
 ```
 
 ## Motivation

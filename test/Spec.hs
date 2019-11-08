@@ -24,4 +24,4 @@ instance TestClass Int Int where
   testFunction = const 0
 
 main :: IO ()
-main = pure ()
+main = const (testFunction '3' :: Int) $ pure ()
