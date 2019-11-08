@@ -34,10 +34,10 @@ API boundaries. We have systems which send and receive values of
 similar types over multiple different APIs, and which need to vary
 their JSON representations independently to allow upgrades. Defining
 serialisation on core data types means that changes to the
-`ToJSON`/`FromJSON` instance can cause breakage at your API layer, on
-the other side of the codebase. Better to ban `ToJSON`/`FromJSON` on
-the core data types, and define types for presentation that live
-alongside the rest of the API:
+`ToJSON`/`FromJSON` instance can cause breakage at the API layer of
+some unrelated system, on the other side of the codebase. Better to
+ban `ToJSON`/`FromJSON` on the core data types, and define types for
+presentation that live alongside the rest of the API:
 
 ```haskell
 -- In some "core types" module:

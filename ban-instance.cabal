@@ -6,6 +6,7 @@ description:
   .
   Banning an instance allows the programmer to actively declare that
   an instance should never be defined, and provide a reason why:
+  .
   @
   data Foo = -- ...
 
