@@ -1,6 +1,6 @@
 # ban-instance - For when a type should never be an instance of a class
 
-![Data61](http://i.imgur.com/0h9dFhl.png)
+![Data61 Logo](https://raw.githubusercontent.com/qfpl/assets/master/data61-transparent-bg.png)
 
 ## Synopsis
 
@@ -15,14 +15,14 @@ import Lanuage.Haskell.Instance.Ban
 
 data Foo = -- ...
 
--- Declare that Foo should never have an Eq instance
-$(banInstance [t|Eq Foo|] "why Eq Foo should never be defined")
+-- Declare that Foo should never have a ToJSON instance
+$(banInstance [t|ToJSON Foo|] "why Eq Foo should never be defined")
 ```
 
 ## Motivation
 
 Banning an instance allows the programmer to actively declare that
-this instance should never be defined, and to provide a reason why. In
+this instance should never be defined, and provide a reason why. In
 terms of what programs the compiler will accept, banning an instance
 is the same as leaving it undefined.
 
@@ -43,21 +43,17 @@ data Foo = -- ...
 $(banInstance [t|ToJSON Foo|] "use a data type at the presentation layer")
 $(banInstance [t|FromJSON Foo|] "use a data type at the presentation layer")
 
-data Bar = -- ...
-$(banInstance [t|ToJSON Bar|] "use a data type at the presentation layer")
-$(banInstance [t|FromJSON Bar|] "use a data type at the presentation layer")
+-- In the module for V1 of the API:
+newtype V1 a = V1 a
 
--- In the module for "API One":
-data Baz = Baz Foo Int
+instance ToJSON (V1 Foo) where -- ...
+instance FromJSON (V1 Foo) where -- ...
 
-instance ToJSON Baz where -- ...
-instance FromJSON Baz where -- ...
+-- In the module for V2 of the API:
+data V2 a = V2 a
 
--- In the module for "API Two":
-data Quux = Quux Foo Bar
-
-instance ToJSON Quux where -- ...
-instance FromJSON Quux where -- ...
+instance ToJSON (V2 Foo) where -- ...
+instance FromJSON (V2 Foo) where -- ...
 ```
 
 ## Limitations
@@ -65,4 +61,4 @@ instance FromJSON Quux where -- ...
 * There is currently no support for type classes with associated types
   or associated data types.
 * Type quotations `[t|...|]` do not support free variables
-  ([GHC#5616](https://ghc.haskell.org/trac/ghc/ticket/5616)).
+  ([GHC#5616](https://gitlab.haskell.org/ghc/ghc/issues/5616)).
