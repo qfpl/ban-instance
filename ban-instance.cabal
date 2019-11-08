@@ -17,7 +17,7 @@ category:       Haskell
 homepage:       https://github.com/qfpl/ban-instance#readme
 bug-reports:    https://github.com/qfpl/ban-instance/issues
 author:         Jack Kelly, Alex Mason
-maintainer:     jack.kelly@data61.csiro.au, alex.mason@data61.csiro.au
+maintainer:     jack.kelly@data61.csiro.au
 copyright:      Copyright (C) 2017 Data61
 license:        BSD3
 license-file:   LICENSE
