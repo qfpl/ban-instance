@@ -6,7 +6,7 @@
 
 {-|
 Module      : Language.Haskell.Instance.Ban
-Description : Declare that a typeclass instance
+Description : Declare that a typeclass instance should never exist.
 Copyright   : (c) 2017, Commonwealth Scientific and Industrial Research Organisation
 License     : BSD3
 Maintainer  : jack.kelly@data61.csiro.au
