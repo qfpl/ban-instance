@@ -5,7 +5,7 @@ mkDerivation {
   src = ./.;
   libraryHaskellDepends = [ base template-haskell ];
   testHaskellDepends = [ base ];
-  homepage = "https://github.com/githubuser/ban-instance#readme";
+  homepage = "https://github.com/qfpl/ban-instance#readme";
   description = "For when a type should never be an instance of a class";
   license = stdenv.lib.licenses.bsd3;
 }

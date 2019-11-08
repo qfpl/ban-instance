@@ -1,12 +1,15 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "default" }:
+{ nixpkgs ? import ./nix/nixpkgs.nix
+, compiler ? "default"
+, doBenchmark ? false
+}:
 
 let
   inherit (nixpkgs) pkgs;
 
   haskellPackages = if compiler == "default"
-                       then pkgs.haskellPackages
-                       else pkgs.haskell.packages.${compiler};
+    then pkgs.haskellPackages
+    else pkgs.haskell.packages.${compiler};
 
-  ban-instance = haskellPackages.callPackage ./ban-instance.nix {};
+  variant = if doBenchmark then pkgs.haskell.lib.doBenchmark else pkgs.lib.id;
 in
-  ban-instance
+  variant (haskellPackages.callPackage ./ban-instance.nix {})

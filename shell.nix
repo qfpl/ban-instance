@@ -1,7 +1,13 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "default" }:
+{ nixpkgs ? import ./nix/nixpkgs.nix
+, compiler ? "default"
+, doBenchmark ? false
+}:
 let
   inherit (nixpkgs) pkgs;
-  drv = import ./default.nix { inherit nixpkgs compiler; };
-  drvWithTools = pkgs.haskell.lib.addBuildDepends drv [ pkgs.cabal-install ];
+  env = (import ./. { inherit nixpkgs compiler doBenchmark; }).env;
 in
-  if pkgs.lib.inNixShell then drvWithTools.env else drvWithTools
+  env.overrideAttrs (oldAttrs: {
+    buildInputs = with pkgs.haskellPackages; oldAttrs.buildInputs ++ [
+      cabal-install cabal2nix ghcid
+    ];
+  })
