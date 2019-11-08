@@ -3,6 +3,17 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators   #-}
 
+
+{-|
+Module      : Language.Haskell.Instance.Ban
+Description : Declare that a typeclass instance
+Copyright   : (c) 2017, Commonwealth Scientific and Industrial Research Organisation
+License     : BSD3
+Maintainer  : jack.kelly@data61.csiro.au
+Stability   : experimental
+Portability : Non-Portable
+-}
+
 module Language.Haskell.Instance.Ban (banInstance) where
 
 import Data.Maybe                 (mapMaybe)
@@ -17,8 +28,16 @@ import Language.Haskell.TH.Syntax
 -- banned instance will fail at compile time. This works by generating
 -- an instance that depends on a custom type error:
 --
--- > instance TypeError (..) => ToJSON Foo where
--- > ...
+-- @
+-- instance TypeError (..) => ToJSON Foo where
+--   ...
+-- @
+--
+-- Use it like this:
+--
+-- @
+-- \$(banInstance [t|ToJSON Foo|] "why ToJSON Foo should never be defined")
+-- @
 banInstance
   :: TypeQ
      -- ^ The instance you want to ban.
