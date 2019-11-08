@@ -42,8 +42,8 @@ alongside the rest of the API:
 ```haskell
 -- In some "core types" module:
 data Foo = -- ...
-$(banInstance [t|ToJSON Foo|] "use a data type at the presentation layer")
-$(banInstance [t|FromJSON Foo|] "use a data type at the presentation layer")
+$(banInstance [t|ToJSON Foo|] "use a newtype wrapper at the API layer")
+$(banInstance [t|FromJSON Foo|] "use a newtype wrapper at the API layer")
 
 -- In the module for V1 of the API:
 newtype V1 a = V1 a
