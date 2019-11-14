@@ -69,7 +69,5 @@ instance FromJSON (V2 Foo) where -- ...
 
 ## Limitations
 
-* There is currently no support for type classes with associated types
-  or associated data types.
 * Type quotations `[t|...|]` do not support free variables
   ([GHC#5616](https://gitlab.haskell.org/ghc/ghc/issues/5616)).
