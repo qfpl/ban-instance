@@ -13,7 +13,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE UndecideableInstances #-}
 
-import Lanuage.Haskell.Instance.Ban
+import Language.Haskell.Instance.Ban
 
 data Foo = -- ...
 
