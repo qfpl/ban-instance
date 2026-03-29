@@ -53,7 +53,7 @@ banInstance constraintQ message = do
                                   ':$$: 'Text "Instance banned at " ':<>: 'Text $(symbol $ formatLocation loc)
                                   ':$$: 'Text ""
                                   )|]]
-  pure <$> instanceD context constraintQ (convertClassDecs classDecs)
+  pure <$> instanceD context (withoutForall <$> constraintQ) (convertClassDecs classDecs)
 
 symbol :: String -> TypeQ
 symbol = litT . strTyLit
@@ -61,10 +61,20 @@ symbol = litT . strTyLit
 formatLocation :: Loc -> String
 formatLocation Loc{..} = concat ["[", loc_package, ":", loc_module, "] ", loc_filename, ":",  show $ fst loc_start]
 
+withoutForall :: Type -> Type
+withoutForall topTy = go topTy where
+  go (ForallT _ _ ty) = ty
+  go ty = ty
+
 className :: Type -> Name
 className topTy = go topTy where
-  go (AppT ty _) = className ty
-  go (ConT name) = name
+  go (ForallT _ _ ty)  = className ty
+  go (ForallVisT _ ty) = className ty
+  go (AppT ty _)       = className ty
+  go (AppKindT ty _)   = className ty
+  go (SigT ty _)       = className ty
+  go (ConT name)       = name
+  go (ParensT ty)      = className ty
   go _ = error $ "Cannot determine class name for type: " ++ pprint topTy
 
 convertClassDecs :: [Dec] -> [DecQ]
