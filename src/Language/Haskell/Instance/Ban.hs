@@ -63,7 +63,7 @@ formatLocation Loc{..} = concat ["[", loc_package, ":", loc_module, "] ", loc_fi
 
 withoutForall :: Type -> Type
 withoutForall topTy = go topTy where
-  go (ForallT _ _ ty) = ty
+  go (ForallT _ _ ty) = go ty
   go ty = ty
 
 className :: Type -> Name
