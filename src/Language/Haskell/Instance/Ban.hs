@@ -38,6 +38,12 @@ import Language.Haskell.TH.Syntax
 -- @
 -- \$(banInstance [t|ToJSON Foo|] "why ToJSON Foo should never be defined")
 -- @
+--
+-- To ban instances containing type variables:
+--
+-- @
+-- \$(banInstance [t|forall a. ToJSON (Maybe a)|] "why ToJSON (Maybe a) should never be defined")
+-- @
 banInstance
   :: TypeQ
      -- ^ The instance you want to ban.
