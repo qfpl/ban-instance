@@ -66,3 +66,8 @@ data V2 a = V2 a
 instance ToJSON (V2 Foo) where -- ...
 instance FromJSON (V2 Foo) where -- ...
 ```
+
+## Limitations
+
+* Type quotations `[t|...|]` do not support free variables
+  ([GHC#5616](https://gitlab.haskell.org/ghc/ghc/issues/5616)).
