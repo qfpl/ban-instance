@@ -2,6 +2,7 @@
 
 {-# LANGUAGE DataKinds              #-}
 {-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE ImpredicativeTypes     #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 {-# LANGUAGE RankNTypes             #-}
 {-# LANGUAGE TemplateHaskell        #-}
@@ -22,6 +23,11 @@ $(banInstance [t|TestClass Char Int|] "because it's really bad")
 -- Test that we haven't overlapped other instances by mistake.
 instance TestClass Int Int where
   testFunction = const 0
+
+class TestClass2 a where
+  testFunction2 :: a
+
+$(banInstance [t|forall a. TestClass2 (Maybe a)|] "no instances allowed")
 
 main :: IO ()
 main = pure ()

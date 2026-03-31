@@ -71,3 +71,9 @@ instance FromJSON (V2 Foo) where -- ...
 
 * Type quotations `[t|...|]` do not support free variables
   ([GHC#5616](https://gitlab.haskell.org/ghc/ghc/issues/5616)).
+  To overcome this limitation, `banInstance` allows you to use an explicit
+  `forall`. For example:
+
+  ```haskell
+  $(banInstance [t|forall a. ToJSON (Maybe a)|] "use a newtype wrapper at the API layer")
+  ```
