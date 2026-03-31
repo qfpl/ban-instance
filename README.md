@@ -75,5 +75,5 @@ instance FromJSON (V2 Foo) where -- ...
   `forall`. For example:
 
   ```haskell
-  $(banInstance [t|forall a. ToJSON (V1 a)|] "use a newtype wrapper at the API layer")
+  $(banInstance [t|forall a. ToJSON (Maybe a)|] "use a newtype wrapper at the API layer")
   ```
